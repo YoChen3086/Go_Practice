@@ -39,7 +39,7 @@ var routes = Routes{
 	Route{
 		"UpdateUser",
 		"PATCH",
-		"/user/{id}",
+		"/user",
 		UpdateUser,
 	},
 	Route{

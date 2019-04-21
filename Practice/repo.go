@@ -2,25 +2,48 @@ package main
 
 var currentId int
 
-var users Users
+var users map[int]User
 
 func init() {
-	RepoCreateUser(User{Name: "Test"})
+	users = make(map[int]User)
 }
 
 func RepoGetUser(id int) User {
-	for _, user := range users {
-		if user.Id == id {
-			return user
-		}
+	user, ok := users[id]
+
+	if ok {
+		return user
+	} else {
+		return User{}
 	}
-	// return empty Todo if not found
-	return User{}
 }
 
 func RepoCreateUser(user User) User {
 	currentId += 1
 	user.Id = currentId
-	users = append(users, user)
+	users[user.Id] = user
 	return user
+}
+
+func RepoUpdateUser(id int, name string) User {
+	user, ok := users[id]
+
+	if ok {
+		user.Name = name
+		users[id] = user
+		return user
+	} else {
+		return RepoCreateUser(User{Id: id, Name: name})
+	}
+}
+
+func RepoDeleteUser(id int) User {
+	user, ok := users[id]
+
+	if ok {
+		delete(users, id)
+		return user
+	} else {
+		return User{}
+	}
 }
